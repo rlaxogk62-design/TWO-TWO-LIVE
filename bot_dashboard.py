@@ -26,6 +26,10 @@ def get_exchange():
         'apiKey': API_KEY,
         'secret': SECRET_KEY,
         'enableRateLimit': True,
+        'options': {
+            'defaultType': 'future',
+            'warnOnFetchBalance': False # 현물 지갑 조회 시도 방지
+        }
     })
 
 exchange = get_exchange()
@@ -34,8 +38,8 @@ SYMBOL = 'BTC/USDT'
 # 실시간 데이터 가져오기 함수
 def fetch_live_data():
     try:
-        # 1. 잔고 조회
-        balance = exchange.fetch_balance()
+        # 1. 선물 계좌 잔고 조회 (fetch_balance에 params={'type': 'future'} 명시)
+        balance = exchange.fetch_balance(params={'type': 'future'})
         usdt_total = float(balance['total'].get('USDT', 0.0))
         usdt_free = float(balance['free'].get('USDT', 0.0))
         
