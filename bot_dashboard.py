@@ -38,10 +38,10 @@ SYMBOL = 'BTC/USDT'
 # 실시간 데이터 가져오기 함수
 def fetch_live_data():
     try:
-        # 1. 선물 계좌 잔고 조회 (fetch_balance에 params={'type': 'future'} 명시)
-        balance = exchange.fetch_balance(params={'type': 'future'})
-        usdt_total = float(balance['total'].get('USDT', 0.0))
-        usdt_free = float(balance['free'].get('USDT', 0.0))
+        # 1. SAPI(현물/자산) 엔드포인트 우회: 완벽한 선물 전용 FAPI 직접 호출
+        account_info = exchange.fapiPrivateV2GetAccount()
+        usdt_total = float(account_info.get('totalWalletBalance', 0.0))
+        usdt_free = float(account_info.get('availableBalance', 0.0))
         
         # 2. 포지션 조회
         positions = exchange.fetch_positions([SYMBOL])
