@@ -3,3 +3,7 @@ ccxt
 pandas
 plotly
 python-dotenv
+xgboost
+scikit-learn
+joblib
+ta
